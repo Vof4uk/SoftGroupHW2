@@ -1,4 +1,4 @@
-package mykytenko;
+package mykytenko.employee;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class EmployeesBonus {
 
     public String chooseEmployeeForBonus(){
         Employee lucky = chooseRandomEmployee();
-        return lucky.fullName();
+        return lucky == null ? null : lucky.fullName();
     }
 
     private Employee chooseRandomEmployee(){

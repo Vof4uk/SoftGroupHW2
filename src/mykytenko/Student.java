@@ -1,18 +1,15 @@
 package mykytenko;
 
-/**
- * Created by Микитенко on 30.01.2017.
- */
-public class Student {
+class Student {
     private String name;
     private int course;
 
-    public Student(String name, int course) {
+    Student(String name, int course) {
         this.name = name;
         this.course = course;
     }
 
-    public int getCourse() {
+    int getCourse() {
         return course;
     }
 
@@ -20,11 +17,19 @@ public class Student {
         this.course = course;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                name +
+                ", course " + course +
+                '}';
     }
 }

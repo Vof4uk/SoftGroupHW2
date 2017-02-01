@@ -1,4 +1,4 @@
-package mykytenko;
+package mykytenko.employee;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,17 +1,16 @@
 package mykytenko;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import mykytenko.song.Song;
+
+import java.io.*;
 import java.util.*;
 
-public class Util {
+class Util {
 
     private Util(){}
 
-    public static void printStudents(Collection<Student> students, int course){
+    static void printStudents(Collection<Student> students, int course){
         Iterator<Student> iterator = students.iterator();
-        System.out.println(String.format("Students on cours %d: ", course));
         boolean atLeastOne = false;
         while (iterator.hasNext()){
             Student s = iterator.next();
@@ -26,28 +25,25 @@ public class Util {
         System.out.println();
     }
 
-    public static void printSongNamesFromFile(String fileName){
+    static void printSongNamesFromFile(String fileName){
+        String file = readTextFromFile(fileName);
+        String lineSep = System.getProperty("line.separator");
+
         Set<String> tracks = new TreeSet<>(new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
                 return s1.compareToIgnoreCase(s2);
             }
         });
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName));)
-        {
-            while (br.ready()){
-                tracks.add(br.readLine());
-            }
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
+
+        tracks.addAll(Arrays.asList(file.split(lineSep)));
 
         for (String s : tracks) {
             System.out.println(s);
         }
     }
 
-    public static Song[] readSongsFromFileOrderByName(String location){
+    static Song[] readSongsFromFileOrderByName(String location){
         //решил и через трисет и через саписок попробовать
         TreeSet<Song> songs = new TreeSet<>(new Comparator<Song>() {
             @Override
@@ -59,13 +55,13 @@ public class Util {
         return songs.toArray(new Song[songs.size()]);
     }
 
-    public static Song[] readSongsFromFileOrderByArtist(String location){
+    static Song[] readSongsFromFileOrderByArtist(String location){
         List<Song> songs = new ArrayList<>();
         readSongsFromFile(location, songs);
         Collections.sort(songs, new Comparator<Song>() {
             @Override
             public int compare(Song s1, Song s2) {
-                return (s1.getTrackName() + s1.getArtist()).compareToIgnoreCase(s2.getTrackName() + s2.getArtist());
+                return (s1.getArtist() + s1.getTrackName()).compareToIgnoreCase(s2.getArtist() + s2.getTrackName());
             }
         });
         return songs.toArray(new Song[songs.size()]);
@@ -81,7 +77,7 @@ public class Util {
         }
     }
 
-    public static Node reverseNodes(Node head){
+    static Node reverseNodes(Node head){
         if(head == null){
             return null;
         }
@@ -104,12 +100,45 @@ public class Util {
         }
     }
 
-    public static void printNodes(Node headNode){
+    static void printNodes(Node headNode){
         Node n = headNode;
         do {
             System.out.printf("%d ", n.getElement());
             n = n.getNext();
         }while (n != null);
         System.out.println();
+    }
+
+    static String readLineFromInputStream(){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))){
+            return reader.readLine();
+        }catch (IOException ex){
+            ex.printStackTrace();
+            throw new RuntimeException("something wrong with console");
+        }
+    }
+
+    static void saveTextToFile(String fileLocation, String text){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileLocation))) {
+            writer.write(text);
+        }catch (IOException ex){
+            throw new RuntimeException("something went wrong while saving file");
+        }
+    }
+
+    static String readTextFromFile(String fileLocation){
+        StringBuilder sb = new StringBuilder();
+        String lineSep = System.getProperty("line.separator");
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileLocation))){
+            while (reader.ready()){
+                if(sb.length() > 0){
+                    sb.append(lineSep);
+                }
+                sb.append(reader.readLine());
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return sb.toString();
     }
 }

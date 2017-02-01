@@ -1,4 +1,4 @@
-package mykytenko;
+package mykytenko.song;
 
 public class Song {
     private String trackName;
