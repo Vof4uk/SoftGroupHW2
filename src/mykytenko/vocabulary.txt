@@ -1,0 +1,4 @@
+white белый
+black черный
+red красный
+racist расист
